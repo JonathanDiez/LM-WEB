@@ -6,7 +6,7 @@ const listaPersonasUL = document.getElementById('lista-personas');
 let personas = {
    "juan123": { nombre: "Juan Pérez", puntos: 5 },
    "ana456": { nombre: "Ana López", puntos: 10 },
-   "carlos789": { nombre: "Carlos García", puntos: 2 }*/
+   "carlos789": { nombre: "Carlos García", puntos: 2 }
 };
 
 // --- Funciones ---
