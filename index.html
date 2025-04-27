@@ -3,34 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Puntos</title>
-    <!-- Enlaza la hoja de estilos CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Nuevo Título -->
+    <title>DATOS | LA MESA</title>
+    <!-- Opcional: Añadir Google Fonts para un look más moderno -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Enlaza la hoja de estilos CSS (¡Recuerda cache busting!) -->
+    <link rel="stylesheet" href="style.css?v=3"> <!-- Incrementa la versión -->
 </head>
 <body>
 
-    <h1>Sistema de Puntos Entre Amigos</h1>
+    <!-- Contenedor Principal -->
+    <div class="main-container">
 
-    <div class="container">
-        <h2>Lista de Participantes</h2>
-        <!-- Aquí se mostrará la lista de personas dinámicamente -->
-        <ul id="lista-personas">
-            <!-- Ejemplo estático (será reemplazado por JS): -->
-            <!--
-            <li>
-                <span>Persona Ejemplo (0 puntos)</span>
-                <button>+</button>
-                <button>-</button>
-            </li>
-            -->
-             <li>Cargando participantes...</li>
-        </ul>
-    </div>
+        <!-- Encabezado -->
+        <header class="app-header">
+            <h1>DATOS | LA MESA</h1>
+            <!-- Área de Autenticación (Login/Logout) -->
+            <div id="auth-container">
+                <div id="login-form" class="auth-section">
+                    <input type="email" id="email" placeholder="Correo electrónico" required>
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                    <button id="login-button">Entrar</button>
+                    <p id="login-error" class="error-message"></p>
+                </div>
+                <div id="user-info" class="auth-section" style="display: none;">
+                    <span id="user-email"></span>
+                    <button id="logout-button">Salir</button>
+                </div>
+            </div>
+        </header>
 
-    <!-- Importante: Enlaza el archivo JavaScript AL FINAL del body -->
-    <!-- Más adelante añadiremos aquí la configuración de Firebase -->
+        <!-- Contenido Principal (Se muestra sólo si estás logueado o para visualización) -->
+        <main id="main-content" > <!-- Inicialmente oculto o con visibilidad limitada -->
+
+             <!-- Sección Top 5 -->
+            <section class="top-section card">
+                 <h2>🏆 Top 5 Puntuaciones</h2>
+                 <ul id="top-5-lista">
+                     <li>Cargando top 5...</li>
+                 </ul>
+            </section>
+
+            <!-- Sección Lista Completa -->
+            <section class="lista-section card">
+                <h2>Lista Completa de Participantes</h2>
+                <ul id="lista-personas">
+                    <li>Cargando participantes...</li>
+                </ul>
+            </section>
+
+        </main>
+
+         <!-- Mensaje si no estás logueado -->
+         <div id="login-prompt" class="card" style="display: none; text-align: center; padding: 20px; margin-top: 20px;">
+            <p>Inicia sesión para modificar puntos.</p>
+         </div>
+
+    </div> <!-- Fin de main-container -->
+
+    <!-- Scripts de Firebase (Añadir Auth) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-    <script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script> <!-- SDK de Auth añadido -->
+
+    <!-- Tu Script (¡Recuerda cache busting!) -->
+    <script src="script.js?v=3"></script> <!-- Incrementa la versión -->
 </body>
 </html>
