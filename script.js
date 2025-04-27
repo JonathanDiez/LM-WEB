@@ -4,10 +4,9 @@ const listaPersonasUL = document.getElementById('lista-personas');
 // --- Datos de Ejemplo (Esto vendrá de Firebase luego) ---
 // Usaremos un objeto donde la clave es el ID único (el código que mencionaste)
 let personas = {
-   /* "juan123": { nombre: "Juan Pérez", puntos: 5 },
-    "ana456": { nombre: "Ana López", puntos: 10 },
-    "carlos789": { nombre: "Carlos García", puntos: 2 }*/
-    // Inicialmente vacío, se llenará desde Firebase
+   "juan123": { nombre: "Juan Pérez", puntos: 5 },
+   "ana456": { nombre: "Ana López", puntos: 10 },
+   "carlos789": { nombre: "Carlos García", puntos: 2 }*/
 };
 
 // --- Funciones ---
