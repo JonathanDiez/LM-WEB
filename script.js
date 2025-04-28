@@ -1,8 +1,7 @@
-// --- Configuración de Firebase (SIN CAMBIOS) ---
 const firebaseConfig = {
-    apiKey: "AIzaSyDXDotyDcrJ8o1U_PNXm1RgzoMx0uAU3f8", // ¡Tu API Key real!
+    apiKey: "AIzaSyDXDotyDcrJ8o1U_PNXm1RgzoMx0uAU3f8",
     authDomain: "datos-lm.firebaseapp.com",
-    databaseURL: "https://datos-lm-default-rtdb.firebaseio.com", // ¡Tu Database URL real!
+    databaseURL: "https://datos-lm-default-rtdb.firebaseio.com",
     projectId: "datos-lm",
     storageBucket: "datos-lm.firebasestorage.app",
     messagingSenderId: "552540792054",
@@ -13,14 +12,13 @@ const firebaseConfig = {
 // --- Inicializar Firebase ---
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-const auth = firebase.auth(); // Inicializar servicio de Auth
+const auth = firebase.auth();
 
-// --- Referencia a la ubicación 'personas' en la base de datos ---
 const personasRef = database.ref('personas');
 
 // --- Seleccionar Elementos del DOM ---
 const listaPersonasUL = document.getElementById('lista-personas');
-const top5ListUL = document.getElementById('top-5-lista'); // Lista para el Top 5
+const top5ListUL = document.getElementById('top-5-lista');
 const loginForm = document.getElementById('login-form');
 const userInfoDiv = document.getElementById('user-info');
 const userEmailSpan = document.getElementById('user-email');
@@ -29,7 +27,6 @@ const logoutButton = document.getElementById('logout-button');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const loginErrorP = document.getElementById('login-error');
-// const mainContent = document.getElementById('main-content'); // Ya no se usa para ocultar todo
 const loginPromptDiv = document.getElementById('login-prompt');
 const addParticipantSection = document.getElementById('add-participant-section');
 const addParticipantForm = document.getElementById('add-participant-form');
@@ -41,20 +38,16 @@ const addErrorP = document.getElementById('add-error');
 
 // --- Variables Globales ---
 let personas = {};
-let currentUser = null; // Para saber si hay alguien logueado
+let currentUser = null;
 
-// --- Funciones de Renderizado ---
-
-// RENDER LISTA COMPLETA (Actualizada con botón Eliminar a la izquierda y formato puntos)
 function renderListaCompleta() {
-    listaPersonasUL.innerHTML = ''; // Limpiar lista actual
+    listaPersonasUL.innerHTML = '';
 
     if (!personas || Object.keys(personas).length === 0) {
         listaPersonasUL.innerHTML = '<li>No hay participantes registrados.</li>';
         return;
     }
 
-    // Convertir a array y ordenar alfabéticamente por nombre
     const personasOrdenadas = Object.entries(personas)
         .sort(([, a], [, b]) => a.nombre.localeCompare(b.nombre));
 
@@ -72,28 +65,24 @@ function renderListaCompleta() {
 
         const pointsSpan = document.createElement('span');
         pointsSpan.classList.add('participant-points');
-        pointsSpan.textContent = `Puntos: ${persona.puntos}`; // Formato actualizado
+        pointsSpan.textContent = `Puntos: ${persona.puntos}`;
         infoDiv.appendChild(pointsSpan);
 
-        li.appendChild(infoDiv); // Añadir info al li
+        li.appendChild(infoDiv); 
 
-        // Controles (solo si logueado)
         if (currentUser) {
 
-            // --- Botón Eliminar (Se añade directamente al LI, antes que los otros controles) ---
             const btnRemove = document.createElement('button');
-            btnRemove.innerHTML = '🗑️'; // Icono papelera
+            btnRemove.innerHTML = '🗑️';
             btnRemove.title = `Eliminar a ${persona.nombre}`;
-            btnRemove.classList.add('remove-participant-btn'); // Clase específica para estilo absoluto
+            btnRemove.classList.add('remove-participant-btn');
             btnRemove.dataset.id = id;
             btnRemove.dataset.name = persona.nombre;
-            li.appendChild(btnRemove); // Añadir al LI
+            li.appendChild(btnRemove);
 
-            // --- Contenedor para los controles de puntos (Irá a la derecha) ---
             const controlsDiv = document.createElement('div');
             controlsDiv.classList.add('controls');
 
-            // Botón Restar 1 (-)
             const btnRestar = document.createElement('button');
             btnRestar.textContent = '−'; // Caracter menos
             btnRestar.title = "Restar 1 punto";
@@ -101,7 +90,6 @@ function renderListaCompleta() {
             btnRestar.dataset.id = id;
             controlsDiv.appendChild(btnRestar);
 
-            // Botón Sumar 1 (+)
             const btnSumar = document.createElement('button');
             btnSumar.textContent = '+';
             btnSumar.title = "Sumar 1 punto";
@@ -109,7 +97,6 @@ function renderListaCompleta() {
             btnSumar.dataset.id = id;
             controlsDiv.appendChild(btnSumar);
 
-            // Input para cantidad
             const inputPuntos = document.createElement('input');
             inputPuntos.type = 'number';
             inputPuntos.placeholder = 'Pts';
@@ -117,35 +104,31 @@ function renderListaCompleta() {
             inputPuntos.setAttribute('aria-label', `Cantidad puntos para ${persona.nombre}`);
             controlsDiv.appendChild(inputPuntos);
 
-            // Botón para Añadir/Restar cantidad del input
             const btnUpdate = document.createElement('button');
-            btnUpdate.textContent = '+/−'; // Icono o texto +/-
+            btnUpdate.textContent = '+/−';
             btnUpdate.title = "Sumar o restar la cantidad indicada";
             btnUpdate.classList.add('update-points');
             btnUpdate.dataset.id = id;
             controlsDiv.appendChild(btnUpdate);
 
-            // Añadir el div de controles (con botones de puntos) al LI
             li.appendChild(controlsDiv);
         }
 
-        listaPersonasUL.appendChild(li); // Añadir el LI completo a la lista UL
+        listaPersonasUL.appendChild(li); 
     }
 }
 
-// RENDER TOP 5 (Formato puntos actualizado)
 function renderTop5() {
-    top5ListUL.innerHTML = ''; // Limpiar lista
+    top5ListUL.innerHTML = '';
 
     if (!personas || Object.keys(personas).length === 0) {
         top5ListUL.innerHTML = '<li>N/A</li>';
         return;
     }
 
-    // Convertir a array, ordenar por PUNTOS (descendente) y tomar los 5 primeros
     const topPersonas = Object.entries(personas)
-        .sort(([, a], [, b]) => b.puntos - a.puntos) // Ordena por puntos descendente
-        .slice(0, 5); // Tomar solo los 5 primeros
+        .sort(([, a], [, b]) => b.puntos - a.puntos) 
+        .slice(0, 5);
 
     if (topPersonas.length === 0) {
         top5ListUL.innerHTML = '<li>N/A</li>';
@@ -153,7 +136,7 @@ function renderTop5() {
     }
 
     topPersonas.forEach(([id, persona], index) => {
-        const li = document.createElement('li'); // Usará los estilos de #top-5-lista li
+        const li = document.createElement('li');
 
         const infoDiv = document.createElement('div');
         infoDiv.classList.add('participant-info');
@@ -169,7 +152,7 @@ function renderTop5() {
 
         const pointsSpan = document.createElement('span');
         pointsSpan.classList.add('participant-points');
-        pointsSpan.textContent = `Puntos: ${persona.puntos}`; // Formato actualizado
+        pointsSpan.textContent = `Puntos: ${persona.puntos}`; 
         infoDiv.appendChild(pointsSpan);
 
         li.appendChild(infoDiv);
@@ -207,8 +190,6 @@ function getFirebaseErrorMessage(error) {
         default: return 'Error al iniciar sesión. Inténtalo de nuevo.';
     }
 }
-
-// --- Funciones de Gestión de Participantes (Sin cambios) ---
 
 // AÑADIR PARTICIPANTE
 function handleAddParticipant(event) {
@@ -279,9 +260,9 @@ function manejarClicControles(event) {
 
     // --- Manejo de PUNTOS (botones dentro del div .controls) ---
     const controlsContainer = button.closest('.controls');
-    if (controlsContainer) { // Asegurarse que el botón está dentro del div de controles
+    if (controlsContainer) {
         const id = button.dataset.id;
-        if (!id || !personas[id]) return; // Salir si no hay ID o persona
+        if (!id || !personas[id]) return;
 
         let puntosActuales = personas[id].puntos;
         let nuevosPuntos;
@@ -298,7 +279,7 @@ function manejarClicControles(event) {
                 inputElement.value = '';
             }
         } else {
-            return; // No es un botón de puntos conocido
+            return;
         }
 
         if (cantidadModificar !== 0) {
