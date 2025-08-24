@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- CSS -->
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -108,13 +110,20 @@
 
 <!-- JS -->
 <script type="module" src="app.js"></script>
+
+<!-- Toggle login forms (puede estar en app.js si quieres centralizar) -->
 <script>
+document.addEventListener("DOMContentLoaded", () => {
   // Toggle login forms según elección
   const chooseAdminBtn = document.getElementById("choose-admin");
   const chooseUserBtn = document.getElementById("choose-user");
   const loginChoiceDiv = document.getElementById("login-choice");
   const loginFormDiv = document.getElementById("login-form");
   const loginCodeDiv = document.getElementById("login-code-form");
+
+  // Inicialmente escondemos los formularios de login
+  loginFormDiv.classList.add("hidden");
+  loginCodeDiv.classList.add("hidden");
 
   chooseAdminBtn.addEventListener("click", () => {
     loginChoiceDiv.classList.add("hidden");
@@ -125,7 +134,8 @@
     loginChoiceDiv.classList.add("hidden");
     loginCodeDiv.classList.remove("hidden");
   });
+});
 </script>
+
 </body>
 </html>
-
