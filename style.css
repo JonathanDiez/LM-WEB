@@ -1,0 +1,385 @@
+:root {
+    --bg-color: #1a1d21;
+    --card-bg-color: #2c3035;
+    --text-color: #e1e3e6;
+    --text-color-secondary: #b0b3b8;
+    --primary-accent: #4a90e2;
+    --border-color: #40444a;
+    --success-color: #4caf50;
+    --warning-color: #ffc107;
+    --danger-color: #f44336;
+    --link-hover-color: #6aa8ff;
+    --input-bg-color: #35393e;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --font-primary: 'Roboto', sans-serif;
+    --font-title: 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* --- Estilos Generales --- */
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.main-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* --- Encabezado --- */
+.app-header {
+    background-color: var(--card-bg-color);
+    padding: 15px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--primary-accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-header h1 {
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+    font-family: var(--font-title);
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* Contenedor login / identificación */
+#auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* Auth Section */
+.auth-section {
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    min-width: 200px;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+}
+
+.auth-section input[type="email"],
+.auth-section input[type="password"],
+.auth-section input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    font-size: 0.95em;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.auth-section input:focus {
+    border-color: var(--primary-accent);
+}
+
+.auth-section button {
+    padding: 8px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    background-color: var(--primary-accent);
+    white-space: nowrap;
+    min-width: auto;
+    text-align: center;
+    font-size: 0.95em;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.auth-section button:hover {
+    background-color: var(--link-hover-color);
+}
+
+.auth-section button:active {
+    transform: scale(0.98);
+}
+
+#logout-button {
+    background-color: var(--danger-color);
+}
+#logout-button:hover {
+    opacity: 0.9;
+}
+
+#user-info span {
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--text-color-secondary);
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 0.85em;
+    margin-top: 5px;
+    min-height: 1.2em;
+    font-weight: bold;
+}
+
+/* --- Layout Principal --- */
+.content-layout {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.column-main {
+    flex: 2;
+    min-width: 300px;
+}
+
+.column-sidebar {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* --- Tarjetas --- */
+.card {
+    background: var(--card-bg-color);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.card h2 {
+    text-align: center;
+    color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 1.4em;
+}
+
+/* --- Listas --- */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#lista-personas li {
+    background: var(--input-bg-color);
+    margin-bottom: 12px;
+    padding: 12px 15px 12px 50px;
+    border-radius: 8px;
+    border: 1px solid #4f5358;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+#lista-personas li:hover {
+    background-color: #3e4247;
+}
+
+li .participant-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+li .participant-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+li .participant-points {
+    font-size: 0.9em;
+    color: var(--text-color-secondary);
+}
+
+/* Botón eliminar */
+.remove-participant-btn {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    padding: 6px 5px;
+    font-size: 0.9em;
+    background-color: var(--danger-color);
+    border: none;
+    border-radius: 7px;
+    color: white;
+    cursor: pointer;
+    z-index: 1;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.remove-participant-btn:hover {
+    opacity: 0.85;
+}
+.remove-participant-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.controls input[type="number"] {
+    width: 60px;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 0.95em;
+    outline: none;
+}
+
+.controls input[type="number"]:focus {
+    border-color: var(--primary-accent);
+}
+
+.controls button {
+    padding: 9px 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.95em;
+    min-width: 34px;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.controls button.increment { background-color: var(--success-color); }
+.controls button.decrement { background-color: var(--warning-color); color: #333; }
+.controls button.update-points { background-color: var(--primary-accent); }
+
+/* Top 5 */
+#top-5-lista li {
+    background: linear-gradient(135deg, #3a3e43, #2c3035);
+    border-left: 6px solid var(--primary-accent);
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#top-5-lista li:hover {
+    background-color: #3e4247;
+}
+
+#top-5-lista li:nth-child(1) { border-left-color: #ffd700; }
+#top-5-lista li:nth-child(2) { border-left-color: #c0c0c0; }
+#top-5-lista li:nth-child(3) { border-left-color: #cd7f32; }
+#top-5-lista li .participant-name { font-size: 1.15em; }
+
+/* Formulario añadir participante */
+#add-participant-form {
+    padding: 15px;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+#add-participant-form label {
+    font-weight: bold;
+    color: var(--text-color-secondary);
+    font-size: 0.9em;
+}
+
+#add-participant-form input[type="text"],
+#add-participant-form input[type="number"] {
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    font-size: 0.95em;
+    width: 100%;
+}
+
+#add-participant-form button {
+    padding: 8px 15px;
+    background-color: var(--success-color);
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#add-participant-form button:hover { opacity: 0.9; }
+#add-participant-form button:active { transform: scale(0.98); }
+
+#add-error {
+    color: var(--warning-color);
+    text-align: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Login prompt */
+#login-prompt {
+    border-left: 5px solid var(--primary-accent);
+    background-color: var(--input-bg-color);
+    padding: 15px;
+    text-align: center;
+}
+#login-prompt p {
+    color: var(--text-color-secondary);
+    font-weight: bold;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .content-layout { flex-direction: column; }
+    .app-header { flex-direction: column; align-items: center; }
+    .auth-section { width: 100%; text-align: center; margin-bottom: 10px; }
+    #lista-personas li { align-items: flex-start; padding: 18px; }
+    #lista-personas li .participant-info { margin-bottom: 10px; width: 100%; margin-right: 0; }
+    .controls { justify-content: flex-start; width: 100%; }
+    #add-participant-form { flex-direction: column; align-items: stretch; }
+    #add-participant-form button { width: 100%; }
+}
