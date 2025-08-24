@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>DATOS | LA MESA</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" href="favicon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
     <div class="main-container">
@@ -28,8 +26,8 @@
             </div>
         </header>
 
-        <div id="login-prompt" class="card hidden" style="text-align: center;">
-           <p>Inicia sesión para añadir nuevos participantes.</p>
+        <div id="login-prompt" class="card hidden" style="text-align:center;">
+           <p>Inicia sesión para gestionar participantes y canjear recompensas.</p>
         </div>
 
         <section id="add-participant-section" class="card hidden">
@@ -49,12 +47,26 @@
         </section>
 
         <div class="content-layout">
-
             <main id="main-content" class="column-main">
                 <section class="lista-section card">
                     <h2>Miembros de LA MESA</h2>
                     <ul id="lista-personas">
                         <li>Cargando miembros...</li>
+                    </ul>
+                </section>
+
+                <!-- NUEVA SECCIÓN: TIENDA -->
+                <section id="tienda-section" class="card tienda-card hidden">
+                    <h2>🛒 Tienda</h2>
+                    <p class="tienda-sub">Canjea tus puntos por descuentos o efectivo interno.</p>
+                    <div id="tienda-items" class="tienda-grid">
+                        <!-- Items se cargan dinámicamente -->
+                    </div>
+                    <div id="mi-puntos" class="mi-puntos">Mi puntos: <strong id="mi-puntos-valor">0</strong></div>
+
+                    <h3>Mis canjes</h3>
+                    <ul id="mis-canjes">
+                        <li>No hay canjes</li>
                     </ul>
                 </section>
             </main>
@@ -70,10 +82,11 @@
         </div>
     </div>
 
+    <!-- Firebase compat libs (tú ya los usabas) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=7"></script>
 </body>
 </html>
