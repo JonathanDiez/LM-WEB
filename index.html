@@ -1,96 +1,132 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DATOS | LA MESA</title>
-  <link rel="icon" href="favicon.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=6">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LA MESA | PUNTUACIONES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-  <div class="main-container">
-    <header class="app-header">
-      <h1>DATOS | LA MESA</h1>
-      <div id="auth-container">
-        <!-- Login por código (sin contraseña) -->
-        <div id="code-login" class="auth-section">
-          <input type="text" id="access-code-input" placeholder="Introduce tu código de acceso">
-          <button id="code-login-button">Entrar con código</button>
-          <p id="code-login-error" class="error-message"></p>
-        </div>
+<div class="main-container">
 
-        <!-- Info de usuario -->
-        <div id="user-info" class="auth-section hidden">
-          <span id="user-email">Invitado</span>
-          <button id="logout-button">Salir</button>
+  <!-- Header / Auth -->
+  <header class="app-header">
+    <h1>LA MESA | PUNTUACIONES</h1>
+    <div id="auth-container">
+
+      <!-- Pregunta inicial -->
+      <div id="login-choice" class="auth-section">
+        <p>¿Cómo quieres identificarte?</p>
+        <div class="controls">
+          <button id="choose-admin">Admin</button>
+          <button id="choose-user">Usuario</button>
         </div>
       </div>
-    </header>
 
-    <div id="login-prompt" class="card hidden" style="text-align:center;">
-       <p>Inicia sesión para gestionar participantes o canjear recompensas.</p>
+      <!-- Login admin -->
+      <div id="login-form" class="auth-section hidden">
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="login-button">Entrar Admin</button>
+        <p class="error-message" id="login-error"></p>
+      </div>
+
+      <!-- Login usuario con código -->
+      <div id="login-code-form" class="auth-section hidden">
+        <input type="text" id="user-code" placeholder="Código de usuario">
+        <button id="login-code-button">Entrar Usuario</button>
+        <p class="error-message" id="login-code-error"></p>
+      </div>
+
+      <!-- Info usuario -->
+      <div id="user-info" class="auth-section hidden">
+        <span id="user-email"></span>
+        <button id="logout-button">Salir</button>
+      </div>
+
     </div>
+  </header>
 
-    <section id="add-participant-section" class="card hidden">
-       <h2>Añadir Nuevo Participante (Admin)</h2>
-       <form id="add-participant-form">
-         <div class="form-group">
-           <label for="new-participant-name">Nombre:</label>
-           <input type="text" id="new-participant-name" required>
-         </div>
-         <div class="form-group">
-           <label for="new-participant-points">Puntos Iniciales:</label>
-           <input type="number" id="new-participant-points" value="0" required>
-         </div>
-         <div class="form-group">
-           <label for="new-participant-code">Código de acceso (opcional):</label>
-           <input type="text" id="new-participant-code" placeholder="ej: ABC123 (opcional)">
-           <small>Si rellenas el código, el mapa accessCodes se actualizará automáticamente.</small>
-         </div>
-         <button type="submit" id="add-participant-button">Añadir</button>
-         <p id="add-error" class="error-message"></p>
-       </form>
-    </section>
-
-    <div class="content-layout">
-      <main id="main-content" class="column-main">
-        <section class="lista-section card">
-          <h2>Miembros de LA MESA</h2>
-          <ul id="lista-personas">
-            <li>Cargando miembros...</li>
-          </ul>
-        </section>
-
-        <!-- TIENDA -->
-        <section id="tienda-section" class="card hidden">
-          <h2>🛒 Tienda</h2>
-          <p class="tienda-sub">Canjea tus puntos por recompensas.</p>
-          <div id="tienda-items" class="tienda-grid"></div>
-          <div class="mi-puntos">Mis puntos: <strong id="mi-puntos-valor">0</strong></div>
-
-          <h3>Mis canjes</h3>
-          <ul id="mis-canjes">
-            <li>No hay canjes</li>
-          </ul>
-        </section>
-      </main>
-
-      <aside class="column-sidebar">
-        <section class="top-section card">
-          <h2>🏆 Top 5</h2>
-          <ul id="top-5-lista"><li>Cargando top 5...</li></ul>
-        </section>
-      </aside>
-    </div>
+  <!-- Mensaje login -->
+  <div id="login-prompt" class="card">
+    <p>Inicia sesión para gestionar participantes y canjear recompensas.</p>
   </div>
 
-  <!-- Firebase libs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <!-- Admin: Añadir participante -->
+  <section id="add-participant-section" class="card hidden">
+    <h2>Añadir Nuevo Participante</h2>
+    <form id="add-participant-form" autocomplete="off">
+      <div class="form-group">
+        <label for="new-participant-name">Nombre:</label>
+        <input type="text" id="new-participant-name" required>
+      </div>
+      <div class="form-group">
+        <label for="new-participant-points">Puntos Iniciales:</label>
+        <input type="number" id="new-participant-points" value="0" required>
+      </div>
+      <button type="submit">Añadir Usuario</button>
+      <p id="add-error" class="error-message"></p>
+    </form>
+  </section>
 
-  <script src="script.js?v=9"></script>
+  <!-- Layout principal -->
+  <div class="content-layout">
+    <main class="column-main">
+      <section class="card">
+        <h2>Miembros de LA MESA</h2>
+        <ul id="lista-personas">
+          <li>Cargando miembros...</li>
+        </ul>
+      </section>
+
+      <section id="tienda-section" class="card hidden">
+        <h2>🛒 Tienda</h2>
+        <div id="tienda-items" class="tienda-grid"></div>
+        <div class="mi-puntos">
+          Mis puntos: <strong id="mi-puntos-valor">0</strong>
+        </div>
+        <h3>Mis canjes</h3>
+        <ul id="mis-canjes"><li>No hay canjes</li></ul>
+      </section>
+    </main>
+
+    <aside class="column-sidebar">
+      <section class="card">
+        <h2>🏆 Top 5</h2>
+        <ul id="top-5-lista">
+          <li>Cargando top 5...</li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+</div>
+
+<!-- JS -->
+<script type="module" src="app.js"></script>
+<script>
+  // Toggle login forms según elección
+  const chooseAdminBtn = document.getElementById("choose-admin");
+  const chooseUserBtn = document.getElementById("choose-user");
+  const loginChoiceDiv = document.getElementById("login-choice");
+  const loginFormDiv = document.getElementById("login-form");
+  const loginCodeDiv = document.getElementById("login-code-form");
+
+  chooseAdminBtn.addEventListener("click", () => {
+    loginChoiceDiv.classList.add("hidden");
+    loginFormDiv.classList.remove("hidden");
+  });
+
+  chooseUserBtn.addEventListener("click", () => {
+    loginChoiceDiv.classList.add("hidden");
+    loginCodeDiv.classList.remove("hidden");
+  });
+</script>
 </body>
 </html>
-
