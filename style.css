@@ -68,3 +68,37 @@
 .claim-status { font-weight: 700; font-size: 0.95em; margin-left: 10px; }
 
 /* Responsive tweaks ya aplicados en tu CSS */
+
+/* ---------- Estilos Tienda / Login por código / Admin ---------- */
+
+#access-code-input { padding: 10px; border-radius:6px; border:1px solid var(--border-color); background:var(--input-bg-color); color:var(--text-color); margin-right:8px; }
+#code-login-button { padding:10px 14px; border-radius:6px; background:var(--primary-accent); color:white; border:none; cursor:pointer; font-weight:700;}
+
+.tienda-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.tienda-item {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.03);
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+}
+
+.tienda-item h4 { margin:0; }
+.tienda-item p { margin:0; color:var(--text-color-secondary); font-size:0.95em;}
+.tienda-item .cost { font-weight:800; color:var(--primary-accent); }
+.tienda-item button { margin-top:8px; padding:8px 10px; background:var(--success-color); color:white; border-radius:6px; border:none; cursor:pointer; font-weight:800;}
+
+.mi-puntos { margin-top:10px; padding:10px; background:var(--input-bg-color); border-radius:8px; border:1px solid var(--border-color); font-weight:700; text-align:center; }
+
+#mis-canjes li { background:#2b2e31; padding:10px; margin-bottom:8px; border-radius:6px; display:flex; justify-content:space-between; color:var(--text-color-secondary); }
+
+.admin-badge { display:inline-block; background:#222; color:var(--primary-accent); padding:2px 8px; border-radius:6px; font-weight:700; margin-left:8px; }
+.code-view { font-size:0.85em; color:var(--text-color-secondary); margin-top:6px; }
