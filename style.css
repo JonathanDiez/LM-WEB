@@ -1,104 +1,61 @@
-/* ---------- Estilos adicionales para la tienda ---------- */
-
-.tienda-card { margin-top: 20px; }
-.tienda-sub { color: var(--text-color-secondary); text-align:center; margin-bottom: 12px; }
-
-.tienda-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 14px;
+:root {
+  --bg-color: #181a1b;
+  --card-bg-color: #222527;
+  --text-color: #fff;
+  --text-color-secondary: #bbb;
+  --primary-accent: #4dabf7;
+  --success-color: #4caf50;
+  --danger-color: #e53935;
+  --warning-color: #ffb300;
+  --input-bg-color: #2a2d30;
+  --border-color: #333;
 }
 
-.tienda-item {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
-  border-radius: 10px;
-  padding: 14px;
-  border: 1px solid rgba(255,255,255,0.03);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-start;
-}
-
-.tienda-item h4 { margin: 0; font-size: 1.05em; color: var(--text-color); }
-.tienda-item .cost { font-weight: 700; color: var(--primary-accent); }
-.tienda-item p { margin: 0; color: var(--text-color-secondary); font-size: 0.95em; }
-
-.tienda-item button {
-  margin-top: 8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 700;
-  background: var(--success-color);
-  color: #fff;
-}
-
-.tienda-item button[disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Mi puntos */
-.mi-puntos {
-  margin-top: 12px;
-  padding: 12px;
-  background: var(--input-bg-color);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg-color);
   color: var(--text-color);
-  font-weight: 700;
-  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-/* Mis canjes (lista) */
-#mis-canjes li {
-  background: #2a2d30;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  color: var(--text-color-secondary);
+.main-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 16px;
+}
+
+.app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.claim-status { font-weight: 700; font-size: 0.95em; margin-left: 10px; }
-
-/* Responsive tweaks ya aplicados en tu CSS */
-
-/* ---------- Estilos Tienda / Login por código / Admin ---------- */
-
-#access-code-input { padding: 10px; border-radius:6px; border:1px solid var(--border-color); background:var(--input-bg-color); color:var(--text-color); margin-right:8px; }
-#code-login-button { padding:10px 14px; border-radius:6px; background:var(--primary-accent); color:white; border:none; cursor:pointer; font-weight:700;}
-
-.tienda-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.tienda-item {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  padding: 12px 16px;
+  background: var(--card-bg-color);
   border-radius: 10px;
-  padding: 12px;
-  border: 1px solid rgba(255,255,255,0.03);
-  display:flex;
-  flex-direction: column;
-  gap:8px;
+  margin-bottom: 16px;
 }
 
-.tienda-item h4 { margin:0; }
-.tienda-item p { margin:0; color:var(--text-color-secondary); font-size:0.95em;}
-.tienda-item .cost { font-weight:800; color:var(--primary-accent); }
-.tienda-item button { margin-top:8px; padding:8px 10px; background:var(--success-color); color:white; border-radius:6px; border:none; cursor:pointer; font-weight:800;}
+h1, h2, h3 {
+  margin: 0;
+  color: var(--text-color);
+}
 
-.mi-puntos { margin-top:10px; padding:10px; background:var(--input-bg-color); border-radius:8px; border:1px solid var(--border-color); font-weight:700; text-align:center; }
+.card {
+  background: var(--card-bg-color);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
 
-#mis-canjes li { background:#2b2e31; padding:10px; margin-bottom:8px; border-radius:6px; display:flex; justify-content:space-between; color:var(--text-color-secondary); }
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.9em;
+  margin-top: 8px;
+}
 
-.admin-badge { display:inline-block; background:#222; color:var(--primary-accent); padding:2px 8px; border-radius:6px; font-weight:700; margin-left:8px; }
-.code-view { font-size:0.85em; color:var(--text-color-secondary); margin-top:6px; }
+button {
+  background: var(--primary-accent);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6
