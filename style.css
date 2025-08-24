@@ -1,441 +1,70 @@
-:root {
-    --bg-color: #1a1d21;         /* Fondo principal oscuro */
-    --card-bg-color: #2c3035;    /* Fondo de las tarjetas */
-    --text-color: #e1e3e6;       /* Color de texto principal */
-    --text-color-secondary: #b0b3b8; /* Texto más tenue */
-    --primary-accent: #4a90e2;   /* Azul brillante como acento */
-    --border-color: #40444a;     /* Bordes sutiles */
-    --success-color: #4caf50;    /* Verde para éxito/sumar */
-    --warning-color: #ffc107;    /* Amarillo para advertencia/restar */
-    --danger-color: #f44336;     /* Rojo para peligro/eliminar/salir */
-    --link-hover-color: #6aa Pff; /* Azul más claro para hover */
-    --input-bg-color: #35393e;   /* Fondo para inputs */
-    --shadow-color: rgba(0, 0, 0, 0.3); /* Sombra más oscura */
+/* ---------- Estilos adicionales para la tienda ---------- */
 
-    /* Fuentes */
-    --font-primary: 'Roboto', sans-serif;
-    --font-title: 'Segoe UI', 'Roboto', sans-serif;
+.tienda-card { margin-top: 20px; }
+.tienda-sub { color: var(--text-color-secondary); text-align:center; margin-bottom: 12px; }
+
+.tienda-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
 }
 
-/* --- Estilos Generales y Fuentes --- */
-body {
-    font-family: var(--font-primary);
-    line-height: 1.6;
-    margin: 0;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    padding: 20px;
-    box-sizing: border-box; /* Incluir padding en el ancho/alto */
+.tienda-item {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
 }
 
-.main-container {
-    max-width: 1100px; /* Más ancho para dos columnas */
-    width: 100%;
-    margin: 0 auto; /* Centrar el contenedor */
+.tienda-item h4 { margin: 0; font-size: 1.05em; color: var(--text-color); }
+.tienda-item .cost { font-weight: 700; color: var(--primary-accent); }
+.tienda-item p { margin: 0; color: var(--text-color-secondary); font-size: 0.95em; }
+
+.tienda-item button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  background: var(--success-color);
+  color: #fff;
 }
 
-/* --- Encabezado y Auth --- */
-.app-header {
-    background-color: var(--card-bg-color);
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    border-bottom: 2px solid var(--primary-accent); /* Borde inferior acentuado */
+.tienda-item button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.app-header h1 {
-    margin: 0;
-    color: var(--text-color);
-    font-family: var(--font-title);
-    font-size: 2em; /* Más grande */
-    font-weight: 700;
-    letter-spacing: 1px; /* Espaciado ligero */
-    text-align: left;
+/* Mi puntos */
+.mi-puntos {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--input-bg-color);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  font-weight: 700;
+  text-align: center;
 }
 
-#auth-container {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Espacio entre elementos de auth */
+/* Mis canjes (lista) */
+#mis-canjes li {
+  background: #2a2d30;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  color: var(--text-color-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.auth-section input[type="email"],
-.auth-section input[type="password"] {
-    padding: 10px 12px;
-    margin-right: 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 0.95em;
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
-    outline: none; /* Quitar borde al enfocar */
-    transition: border-color 0.2s ease;
-}
-.auth-section input:focus {
-    border-color: var(--primary-accent);
-}
+.claim-status { font-weight: 700; font-size: 0.95em; margin-left: 10px; }
 
-.auth-section button {
-    padding: 10px 18px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    background-color: var(--primary-accent);
-    font-size: 0.95em;
-    font-weight: bold;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-.auth-section button:hover {
-    background-color: var(--link-hover-color);
-}
-.auth-section button:active {
-    transform: scale(0.98); /* Efecto al pulsar */
-}
-
-#logout-button {
-    background-color: var(--danger-color);
-}
-#logout-button:hover {
-    opacity: 0.9;
-}
-
-#user-info span {
-    margin-right: 10px;
-    font-weight: bold;
-    color: var(--text-color-secondary);
-}
-
-.error-message {
-    color: var(--danger-color);
-    font-size: 0.85em;
-    margin-top: 5px;
-    display: block;
-    min-height: 1.2em;
-    font-weight: bold;
-}
-
-/* --- Layout Principal (Dos Columnas) --- */
-.content-layout {
-    display: flex;
-    gap: 30px; /* Espacio entre columnas */
-    flex-wrap: wrap;
-}
-
-.column-main {
-    flex: 2;
-    min-width: 300px;
-}
-
-.column-sidebar {
-    flex: 1;
-    min-width: 250px;
-}
-
-/* --- Tarjetas de Contenido --- */
-.card {
-    background: var(--card-bg-color);
-    padding: 25px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    margin-bottom: 30px;
-    border: 1px solid var(--border-color);
-}
-
-.card h2 {
-    text-align: center;
-    color: var(--text-color);
-    margin-top: 0;
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 15px;
-    font-family: var(--font-title);
-    font-weight: 600;
-    font-size: 1.4em;
-}
-
-/* --- Estilos Listas (Top 5 y Completa) --- */
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Estilo principal para los items de la lista completa */
-#lista-personas li {
-    background: var(--input-bg-color);
-    margin-bottom: 15px;
-    padding: 15px 20px 15px 55px;
-    border-radius: 8px;
-    border: 1px solid #4f5358;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    transition: background-color 0.2s ease;
-    position: relative;
-}
-#lista-personas li:hover {
-    background-color: #3e4247;
-}
-
-/* Contenedor para Nombre y Puntos (se ajusta automáticamente) */
-li .participant-info {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    margin-right: 15px;
-    word-break: break-word;
-    position: relative;
-    z-index: 0;
-}
-
-li .participant-name {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: var(--text-color);
-}
-li .participant-points {
-    font-size: 0.9em;
-    color: var(--text-color-secondary);
-}
-
-/* --- Botón Eliminar Específico (Absoluto a la izquierda) --- */
-.remove-participant-btn {
-    position: absolute;             /* Posición absoluta respecto al LI */
-    top: 50%;                       /* Centrado vertical inicial */
-    left: 15px;                     /* Separación del borde izquierdo */
-    transform: translateY(-50%);   /* Ajuste fino para centrado vertical exacto */
-    padding: 8px 5px;               /* Padding más pequeño */
-    font-size: 0.9em;               /* Tamaño de fuente/icono más pequeño */
-    line-height: 1;                 /* Ajustar altura de línea */
-    min-width: auto;                /* Ancho ajustado al contenido */
-    background-color: var(--danger-color);
-    border: none;
-    border-radius: 7px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    z-index: 1; /* Asegurarse que esté sobre otros elementos */
-}
-.remove-participant-btn:hover {
-    opacity: 0.85;
-}
-.remove-participant-btn:active {
-    transform: translateY(-50%) scale(0.95); /* Mantener centrado al escalar */
-}
-
-.controls {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    flex-shrink: 0;
-}
-
-/* Input para puntos */
-.controls input[type="number"] {
-    width: 65px;
-    padding: 8px 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    text-align: center;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: 1em;
-    -moz-appearance: textfield;
-    outline: none;
-}
-.controls input[type="number"]::-webkit-outer-spin-button,
-.controls input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.controls input[type="number"]:focus {
-    border-color: var(--primary-accent);
-}
-
-/* Botones de control de puntos */
-.controls button {
-    padding: 8px 12px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 1em;
-    min-width: 38px;
-    text-align: center;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    font-weight: bold;
-}
-.controls button:hover {
-    opacity: 0.85;
-}
-.controls button:active {
-    transform: scale(0.95);
-}
-
-.controls button.increment { background-color: var(--success-color); }
-.controls button.decrement { background-color: var(--warning-color); color: #333; }
-.controls button.update-points { background-color: var(--primary-accent); }
-
-/* Estilos específicos para el Top 5 */
-#top-5-lista li {
-    background: linear-gradient(135deg, #3a3e43, #2c3035);
-    border-left: 6px solid var(--primary-accent);
-    padding: 15px 20px;
-    position: static;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: 1px solid #4f5358;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    transition: background-color 0.2s ease;
-}
-#top-5-lista li:hover {
-    background-color: #3e4247;
-}
-
-#top-5-lista li:nth-child(1) { border-left-color: #ffd700; } /* Oro */
-#top-5-lista li:nth-child(2) { border-left-color: #c0c0c0; } /* Plata */
-#top-5-lista li:nth-child(3) { border-left-color: #cd7f32; } /* Bronce */
-#top-5-lista li .participant-name { font-size: 1.15em; } /* Destacar nombre en Top 5 */
-
-/* --- Formulario Añadir Participante --- */
-#add-participant-form {
-    padding: 20px;
-    border: 1px dashed var(--border-color);
-    border-radius: 8px;
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: flex-end;
-}
-#add-participant-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: var(--text-color-secondary);
-    font-size: 0.9em;
-}
-#add-participant-form input[type="text"],
-#add-participant-form input[type="number"] {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
-    font-size: 1em;
-    box-sizing: border-box;
-    outline: none;
-}
-#add-participant-form input:focus {
-    border-color: var(--primary-accent);
-}
-#add-participant-form .form-group {
-    flex: 1; 
-    min-width: 150px; 
-}
-#add-participant-form button {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    background-color: var(--success-color); 
-    font-size: 1em;
-    font-weight: bold;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    height: 41px; 
-}
-#add-participant-form button:hover {
-    opacity: 0.9;
-}
-#add-participant-form button:active {
-    transform: scale(0.98);
-}
-#add-error { 
-    color: var(--warning-color);
-    font-size: 0.9em;
-    width: 100%; 
-    text-align: center;
-    margin-top: 5px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Mensaje de Login Prompt */
-#login-prompt {
-    border-left: 5px solid var(--primary-accent);
-    background-color: var(--input-bg-color);
-}
-#login-prompt p {
-    color: var(--text-color-secondary);
-    font-weight: bold;
-}
-
-/* --- Responsive --- */
-@media (max-width: 768px) {
-    .content-layout {
-        flex-direction: column; 
-    }
-    .app-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .app-header h1 {
-        text-align: center;
-        margin-bottom: 15px;
-    }
-    #auth-container {
-       justify-content: center;
-       flex-wrap: wrap; 
-    }
-    .auth-section {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    /* Ajuste para LI en móvil */
-     #lista-personas li {
-        align-items: flex-start;
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-    #lista-personas li .participant-info {
-        margin-bottom: 15px;
-        text-align: left; /* Alinear texto a la izquierda */
-        margin-right: 0; /* Sin margen derecho */
-        width: 100%; /* Ocupar todo el ancho */
-    }
-    
-    .controls {
-        justify-content: flex-start; /* Alinear controles a la izquierda */
-        width: 100%; /* Ocupar todo el ancho */
-    }
-    
-    /* Botón eliminar en móvil (se queda arriba a la izq, ajustar si se desea) */
-    .remove-participant-btn {
-        /* Podríamos ajustar 'top' o 'left' si es necesario */
-        /* top: 15px; */
-    }
-
-    #add-participant-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    #add-participant-form button {
-        width: 100%;
-    }
-}
+/* Responsive tweaks ya aplicados en tu CSS */
