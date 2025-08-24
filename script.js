@@ -1,3 +1,4 @@
+/* script.js v7 - integra tu firebaseConfig y funciones de tienda/canje */
 const firebaseConfig = {
     apiKey: "AIzaSyDXDotyDcrJ8o1U_PNXm1RgzoMx0uAU3f8",
     authDomain: "datos-lm.firebaseapp.com",
@@ -8,15 +9,16 @@ const firebaseConfig = {
     appId: "1:552540792054:web:770291d30460f2c05778d7",
     measurementId: "G-FFV2G059J4"
 };
-  
+
 // --- Inicializar Firebase ---
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const auth = firebase.auth();
 
 const personasRef = database.ref('personas');
+const claimsRef = database.ref('claims');
 
-// --- Seleccionar Elementos del DOM ---
+// --- DOM ---
 const listaPersonasUL = document.getElementById('lista-personas');
 const top5ListUL = document.getElementById('top-5-lista');
 const loginForm = document.getElementById('login-form');
@@ -32,14 +34,26 @@ const addParticipantSection = document.getElementById('add-participant-section')
 const addParticipantForm = document.getElementById('add-participant-form');
 const newParticipantNameInput = document.getElementById('new-participant-name');
 const newParticipantPointsInput = document.getElementById('new-participant-points');
-const addParticipantButton = document.getElementById('add-participant-button');
 const addErrorP = document.getElementById('add-error');
 
+const tiendaSection = document.getElementById('tienda-section');
+const tiendaItemsDiv = document.getElementById('tienda-items');
+const miPuntosValor = document.getElementById('mi-puntos-valor');
+const misCanjesUL = document.getElementById('mis-canjes');
 
-// --- Variables Globales ---
+const listaPersonasContainer = document.getElementById('lista-personas');
+
 let personas = {};
 let currentUser = null;
+let userPersonId = null; // si quieres mapear email->persona ID, o usa auth.uid
 
+/* --- CONFIG TIENDA: items (puedes ampliar) --- */
+const TIENDA_ITEMS = [
+  { id: 'cash-100k', name: '100.000 $ (cash interno)', cost: 10, description: 'Canjea 10 puntos por 100.000 $ en el sistema interno.' },
+  { id: 'tienda-15pct', name: '15% Descuento tienda', cost: 20, description: '15% de descuento en tienda interna.' }
+];
+
+/* --- RENDER LISTAS (tu código adaptado) --- */
 function renderListaCompleta() {
     listaPersonasUL.innerHTML = '';
 
@@ -54,7 +68,6 @@ function renderListaCompleta() {
     for (const [id, persona] of personasOrdenadas) {
         const li = document.createElement('li');
 
-        // Contenedor para Nombre y Puntos
         const infoDiv = document.createElement('div');
         infoDiv.classList.add('participant-info');
 
@@ -68,10 +81,10 @@ function renderListaCompleta() {
         pointsSpan.textContent = `Puntos: ${persona.puntos}`;
         infoDiv.appendChild(pointsSpan);
 
-        li.appendChild(infoDiv); 
+        li.appendChild(infoDiv);
 
+        // Mantengo controles anteriores si el usuario es admin (currentUser)
         if (currentUser) {
-
             const btnRemove = document.createElement('button');
             btnRemove.innerHTML = '🗑️';
             btnRemove.title = `Eliminar a ${persona.nombre}`;
@@ -84,7 +97,7 @@ function renderListaCompleta() {
             controlsDiv.classList.add('controls');
 
             const btnRestar = document.createElement('button');
-            btnRestar.textContent = '−'; // Caracter menos
+            btnRestar.textContent = '−';
             btnRestar.title = "Restar 1 punto";
             btnRestar.classList.add('decrement');
             btnRestar.dataset.id = id;
@@ -101,7 +114,6 @@ function renderListaCompleta() {
             inputPuntos.type = 'number';
             inputPuntos.placeholder = 'Pts';
             inputPuntos.classList.add('points-input');
-            inputPuntos.setAttribute('aria-label', `Cantidad puntos para ${persona.nombre}`);
             controlsDiv.appendChild(inputPuntos);
 
             const btnUpdate = document.createElement('button');
@@ -114,7 +126,7 @@ function renderListaCompleta() {
             li.appendChild(controlsDiv);
         }
 
-        listaPersonasUL.appendChild(li); 
+        listaPersonasUL.appendChild(li);
     }
 }
 
@@ -127,17 +139,11 @@ function renderTop5() {
     }
 
     const topPersonas = Object.entries(personas)
-        .sort(([, a], [, b]) => b.puntos - a.puntos) 
+        .sort(([, a], [, b]) => b.puntos - a.puntos)
         .slice(0, 5);
-
-    if (topPersonas.length === 0) {
-        top5ListUL.innerHTML = '<li>N/A</li>';
-        return;
-    }
 
     topPersonas.forEach(([id, persona], index) => {
         const li = document.createElement('li');
-
         const infoDiv = document.createElement('div');
         infoDiv.classList.add('participant-info');
 
@@ -152,7 +158,7 @@ function renderTop5() {
 
         const pointsSpan = document.createElement('span');
         pointsSpan.classList.add('participant-points');
-        pointsSpan.textContent = `Puntos: ${persona.puntos}`; 
+        pointsSpan.textContent = `Puntos: ${persona.puntos}`;
         infoDiv.appendChild(pointsSpan);
 
         li.appendChild(infoDiv);
@@ -160,8 +166,7 @@ function renderTop5() {
     });
 }
 
-
-// --- Funciones de Autenticación (Sin cambios) ---
+/* --- AUTH (tu código adaptado) --- */
 function handleLogin(event) {
     event.preventDefault();
     const email = emailInput.value;
@@ -174,24 +179,21 @@ function handleLogin(event) {
             loginErrorP.textContent = getFirebaseErrorMessage(error);
         });
 }
-
 function handleLogout() {
     auth.signOut().then(() => { console.log("Usuario deslogueado"); })
     .catch((error) => { console.error("Error al cerrar sesión:", error); });
 }
-
 function getFirebaseErrorMessage(error) {
     switch (error.code) {
         case 'auth/invalid-email': return 'El formato del correo es inválido.';
         case 'auth/user-disabled': return 'Este usuario ha sido deshabilitado.';
         case 'auth/user-not-found': return 'No se encontró un usuario con ese correo.';
         case 'auth/wrong-password': return 'La contraseña es incorrecta.';
-        case 'auth/invalid-credential': return 'Credenciales inválidas.'; // Más genérico
         default: return 'Error al iniciar sesión. Inténtalo de nuevo.';
     }
 }
 
-// AÑADIR PARTICIPANTE
+/* --- Añadir participante --- */
 function handleAddParticipant(event) {
     event.preventDefault();
     addErrorP.textContent = '';
@@ -223,7 +225,7 @@ function handleAddParticipant(event) {
         });
 }
 
-// ELIMINAR PARTICIPANTE
+/* --- Eliminar participante --- */
 function removeParticipant(id, nombre) {
     if (confirm(`¿Estás seguro de que quieres eliminar a ${nombre}? Esta acción no se puede deshacer.`)) {
         database.ref(`personas/${id}`).remove()
@@ -235,30 +237,26 @@ function removeParticipant(id, nombre) {
     }
 }
 
-// --- Función para manejar Clics en Botones/Controles (Adaptada a la nueva estructura DOM) ---
+/* --- Manejo clics (edición puntos) --- */
 function manejarClicControles(event) {
     const target = event.target;
     if (!currentUser) return;
 
-    // Encontrar el LI padre del elemento clickeado, si existe dentro de la lista principal
     const listItem = target.closest('#lista-personas li');
     if (!listItem) return;
 
-    // Encontrar el botón específico que fue clickeado dentro del LI
     const button = target.closest('button');
-    if (!button) return; // No se hizo clic en un botón
+    if (!button) return;
 
-    // --- Manejo de ELIMINAR (botón con clase específica) ---
     if (button.classList.contains('remove-participant-btn')) {
         const id = button.dataset.id;
         const nombre = button.dataset.name;
         if (id && nombre) {
             removeParticipant(id, nombre);
         }
-        return; // Terminar aquí para eliminar
+        return;
     }
 
-    // --- Manejo de PUNTOS (botones dentro del div .controls) ---
     const controlsContainer = button.closest('.controls');
     if (controlsContainer) {
         const id = button.dataset.id;
@@ -295,39 +293,41 @@ function manejarClicControles(event) {
     }
 }
 
-
-// --- Función para Actualizar la UI basada en el estado de Auth (Sin cambios) ---
+/* --- ACTUALIZACIÓN UI según Auth --- */
 function updateUIBasedOnAuth() {
     if (currentUser) {
-        // LOGUEADO
         loginForm.classList.add('hidden');
         userInfoDiv.classList.remove('hidden');
         userEmailSpan.textContent = currentUser.email;
         loginPromptDiv.classList.add('hidden');
         addParticipantSection.classList.remove('hidden');
+        tiendaSection.classList.remove('hidden');
         renderListaCompleta();
         renderTop5();
+        setupTiendaUI();
+        subscribeToMyClaims(); // escucha de mis claims
     } else {
-        // NO LOGUEADO
         loginForm.classList.remove('hidden');
         userInfoDiv.classList.add('hidden');
         userEmailSpan.textContent = '';
         loginPromptDiv.classList.remove('hidden');
         addParticipantSection.classList.add('hidden');
+        tiendaSection.classList.add('hidden');
         loginErrorP.textContent = '';
         addErrorP.textContent = '';
         renderListaCompleta();
         renderTop5();
+        clearTiendaUI();
     }
 }
 
-
-// --- Listener Principal de Firebase (Datos y Auth - Sin cambios) ---
+/* --- Firebase listeners --- */
 personasRef.on('value', (snapshot) => {
-    console.log("Datos DB actualizados!");
     personas = snapshot.exists() ? snapshot.val() : {};
     renderListaCompleta();
     renderTop5();
+    // actualizar puntos del usuario si hay persona vinculada por email o similar
+    updateMiPuntos();
 }, (error) => {
     console.error("Error al leer datos de Firebase:", error);
     listaPersonasUL.innerHTML = '<li>Error al cargar datos.</li>';
@@ -340,11 +340,178 @@ auth.onAuthStateChanged((user) => {
     updateUIBasedOnAuth();
 });
 
+/* --- TIENDA: renderizar items, botones --- */
+function setupTiendaUI() {
+  tiendaItemsDiv.innerHTML = '';
+  TIENDA_ITEMS.forEach(item => {
+    const div = document.createElement('div');
+    div.classList.add('tienda-item');
+    div.innerHTML = `
+      <h4>${item.name}</h4>
+      <p class="desc">${item.description}</p>
+      <div>Coste: <span class="cost">${item.cost} pts</span></div>
+      <button data-item-id="${item.id}">Canjear</button>
+    `;
+    const btn = div.querySelector('button');
+    btn.addEventListener('click', () => {
+      intentarCanjear(item);
+    });
+    tiendaItemsDiv.appendChild(div);
+  });
+  updateMiPuntos();
+}
 
-// --- Añadir Event Listeners Iniciales (Sin cambios) ---
+function clearTiendaUI(){
+  tiendaItemsDiv.innerHTML = '';
+  miPuntosValor.textContent = '0';
+  misCanjesUL.innerHTML = '<li>No hay canjes</li>';
+}
+
+/* --- Obtener puntos "mi jugador" desde personas.
+   Aquí hay dos posibilidades: si tu mapping usuario-auth -> persona está por email, lo buscamos por email.
+   Si usas uid como key en personas, ajusta esto. */
+function findPersonaIdByEmail(email) {
+  if (!personas) return null;
+  for (const [id, p] of Object.entries(personas)) {
+    if (p.email && p.email === email) return id; // si guardas email en persona
+    if (p.nombre && email && p.nombre.toLowerCase().includes(email.split('@')[0].toLowerCase())) {
+      // heurística: nombre contiene parte del email - opcional
+      // NO es segura, mejor guardar el uid/email en personas al crear participante.
+    }
+  }
+  return null;
+}
+
+function updateMiPuntos() {
+  if (!currentUser) { miPuntosValor.textContent = '0'; return; }
+  // Intento encontrar persona por email (recomiendo guardar email o uid en persona)
+  const pid = findPersonaIdByEmail(currentUser.email);
+  if (pid && personas[pid]) {
+    miPuntosValor.textContent = personas[pid].puntos;
+    userPersonId = pid;
+  } else {
+    // si no encuentras, intentamos buscar por uid
+    if (personas[currentUser.uid]) {
+      miPuntosValor.textContent = personas[currentUser.uid].puntos;
+      userPersonId = currentUser.uid;
+    } else {
+      miPuntosValor.textContent = '0';
+      userPersonId = null;
+    }
+  }
+
+  // actualizar botones (activar/desactivar)
+  document.querySelectorAll('.tienda-item').forEach(div => {
+    const btn = div.querySelector('button');
+    const cost = parseInt(div.querySelector('.cost').textContent) || 0;
+    const puntos = parseInt(miPuntosValor.textContent) || 0;
+    btn.disabled = puntos < cost;
+  });
+}
+
+/* --- CREAR CLAIM (cuando usuario canjea desde frontend) --- */
+function intentarCanjear(item) {
+  if (!currentUser) { alert('Debes iniciar sesión para canjear'); return; }
+  // obtener persona id y puntos actuales
+  const pid = userPersonId;
+  // Si no hay mapeo persona -> uid/email, pedimos confirmación y procedemos de todos modos:
+  if (!pid) {
+    if (!confirm('No hemos podido asociar automáticamente tu cuenta a un participante en la lista. ¿Quieres continuar y usar tu UID de autenticación?')) {
+      return;
+    }
+  }
+
+  // Crear claim
+  const newClaimRef = claimsRef.push();
+  const claimObj = {
+    userId: pid || currentUser.uid,
+    userUid: currentUser.uid,
+    userName: currentUser.email || currentUser.displayName || 'Usuario',
+    rewardId: item.id,
+    rewardName: item.name,
+    cost: item.cost,
+    status: 'pending',
+    ts: Date.now()
+  };
+
+  newClaimRef.set(claimObj)
+    .then(() => {
+      alert('Canje solicitado. En breve se procesará. Revisa "Mis canjes" para su estado.');
+    })
+    .catch(err => {
+      console.error('Error creando claim:', err);
+      alert('Error al enviar la solicitud de canje.');
+    });
+}
+
+/* --- ESCUCHAR MIS CANJES: claims donde userUid == currentUser.uid --- */
+let myClaimsListener = null;
+function subscribeToMyClaims() {
+  if (!currentUser) return;
+  if (myClaimsListener) myClaimsListener.off(); // limpiar si había
+  myClaimsListener = database.ref('claims').orderByChild('userUid').equalTo(currentUser.uid);
+  myClaimsListener.on('value', snapshot => {
+    const data = snapshot.exists() ? snapshot.val() : {};
+    renderMyClaims(data);
+  });
+}
+
+function renderMyClaims(data) {
+  misCanjesUL.innerHTML = '';
+  const entries = Object.entries(data || {});
+  if (entries.length === 0) {
+    misCanjesUL.innerHTML = '<li>No hay canjes</li>';
+    return;
+  }
+  // ordenar por fecha descendente
+  entries.sort((a,b) => (b[1].ts || 0) - (a[1].ts || 0));
+  for (const [id, c] of entries) {
+    const li = document.createElement('li');
+    const left = document.createElement('div');
+    left.innerHTML = `<strong>${c.rewardName}</strong> <div style="font-size:0.9em;color:var(--text-color-secondary)">${new Date(c.ts).toLocaleString()}</div>`;
+    const right = document.createElement('div');
+    const statusSpan = document.createElement('span');
+    statusSpan.classList.add('claim-status');
+    statusSpan.textContent = (c.status || 'pending').toUpperCase();
+    if (c.status === 'processed') statusSpan.style.color = 'var(--success-color)';
+    else if (c.status === 'failed') statusSpan.style.color = 'var(--danger-color)';
+    else statusSpan.style.color = 'var(--warning-color)';
+    right.appendChild(statusSpan);
+
+    // Si está processed, mostramos old/new
+    if (c.status === 'processed') {
+      const sub = document.createElement('div');
+      sub.style.fontSize = '0.9em';
+      sub.style.color = 'var(--text-color-secondary)';
+      sub.textContent = `Puntos: ${c.oldPoints} → ${c.newPoints}`;
+      right.appendChild(sub);
+    } else if (c.status === 'failed') {
+      const sub = document.createElement('div');
+      sub.style.fontSize = '0.9em';
+      sub.style.color = 'var(--text-color-secondary)';
+      sub.textContent = `Razón: ${c.reason || 'fondo insuficiente'}`;
+      right.appendChild(sub);
+    }
+
+    li.appendChild(left);
+    li.appendChild(right);
+    misCanjesUL.appendChild(li);
+  }
+}
+
+/* --- LIMPIEZA al logout --- */
+function cleanupAfterLogout() {
+  if (myClaimsListener) {
+    myClaimsListener.off();
+    myClaimsListener = null;
+  }
+}
+
+/* --- Event Listeners --- */
 loginButton.addEventListener('click', handleLogin);
 logoutButton.addEventListener('click', handleLogout);
 addParticipantForm.addEventListener('submit', handleAddParticipant);
-listaPersonasUL.addEventListener('click', manejarClicControles); // Un solo listener para todos los botones
+listaPersonasUL.addEventListener('click', manejarClicControles);
 
+// impresión inicial
 console.log("App DATOS | LA MESA inicializada.");
