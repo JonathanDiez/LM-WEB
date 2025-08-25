@@ -6,138 +6,162 @@
 <title>LA MESA | PUNTUACIONES</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-<!-- CSS -->
-<link rel="stylesheet" href="style.css?v=2.5">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1.3">
 </head>
 <body>
 <div class="main-container">
 
-  <!-- Header / Auth -->
-  <header class="app-header">
-    <h1>LA MESA | PUNTUACIONES</h1>
-    <div id="auth-container">
-
-      <!-- Pregunta inicial -->
-      <div id="login-choice" class="auth-section">
-        <p>¿Cómo quieres identificarte?</p>
-        <div class="controls">
-          <button id="choose-admin">Admin</button>
-          <button id="choose-user">Usuario</button>
+    <header class="app-header">
+    <div class="header-left">
+        <div class="logo">
+            <img id="logo-imagen" src="logo.png" 
+                 alt="Logo LA MESA" 
+                 width="56" 
+                 height="56" 
+                 loading="lazy" 
+                 decoding="async">
         </div>
-      </div>
+        <div>
+            <h1>LA MESA</h1>
+            <p class="subtitle">Sistema de Puntuaciones y Recompensas</p>
+        </div>
+    </div>
 
-      <!-- Login admin -->
-      <div id="login-form" class="auth-section hidden">
-        <input type="email" id="email" placeholder="Correo electrónico">
-        <input type="password" id="password" placeholder="Contraseña">
-        <button id="login-button">Entrar Admin</button>
+    <div id="auth-container" class="auth-wrapper">
+
+        <div id="login-choice" class="auth-section">
+        <p>¿Cómo quieres acceder?</p>
+        <div class="controls-row">
+            <button id="choose-admin" class="ghost">👨‍💼 Admin</button>
+            <button id="choose-user" class="ghost">👤 Usuario</button>
+        </div>
+        </div>
+
+        <div id="login-form" class="auth-section hidden">
+        <p>🔐 Acceso Administrativo</p>
+        <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" placeholder="admin@lamesa.com" autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <label class="checkbox">
+            <input type="checkbox" id="admin-remember"> 
+            <span>Mantener sesión iniciada</span>
+        </label>
+        <button id="login-button" class="primary">Iniciar Sesión</button>
         <p class="error-message" id="login-error"></p>
-      </div>
+        <button id="back-from-admin" class="link">← Volver</button>
+        </div>
 
-      <!-- Login usuario con código -->
-      <div id="login-code-form" class="auth-section hidden">
-        <input type="text" id="user-code" placeholder="Código de usuario">
-        <button id="login-code-button">Entrar Usuario</button>
+        <div id="login-code-form" class="auth-section hidden">
+        <p>🎯 Acceso de Usuario</p>
+        <div class="form-group">
+            <label for="user-code">Código de acceso</label>
+            <input type="text" id="user-code" placeholder="Ej: ABC123" style="text-transform: uppercase;">
+        </div>
+        <label class="checkbox">
+            <input type="checkbox" id="user-remember"> 
+            <span>Recordarme en este dispositivo</span>
+        </label>
+        <button id="login-code-button" class="primary">Acceder</button>
         <p class="error-message" id="login-code-error"></p>
-      </div>
+        <button id="back-from-user" class="link">← Volver</button>
+        </div>
 
-      <!-- Info usuario -->
-      <div id="user-info" class="auth-section hidden">
-        <span id="user-email"></span>
-        <button id="logout-button">Salir</button>
-      </div>
+        <div id="user-info" class="auth-section hidden">
+        <div class="user-row">
+            <div>
+            <div id="user-email" class="user-name">Usuario</div>
+            <div id="user-role" class="user-role"></div>
+            </div>
+            <div class="user-actions">
+            <button id="logout-button" class="danger">Salir</button>
+            </div>
+        </div>
+        </div>
 
     </div>
-  </header>
+    </header>
 
-  <!-- Mensaje login -->
-  <div id="login-prompt" class="card">
-    <p>Inicia sesión para gestionar participantes y canjear recompensas.</p>
-  </div>
+    <div id="login-prompt" class="card">
+    <div style="text-align: center;">
+        <h2 style="margin-bottom: 12px;">🎮 Bienvenido a LA MESA</h2>
+        <p style="margin: 0; font-size: 1.05rem;">Inicia sesión para gestionar participantes y canjear recompensas exclusivas.</p>
+    </div>
+    </div>
 
-  <!-- Admin: Añadir participante -->
-  <section id="add-participant-section" class="card hidden">
-    <h2>Añadir Nuevo Participante</h2>
-    <form id="add-participant-form" autocomplete="off">
-      <div class="form-group">
-        <label for="new-participant-name">Nombre:</label>
-        <input type="text" id="new-participant-name" required>
-      </div>
-      <div class="form-group">
-        <label for="new-participant-points">Puntos Iniciales:</label>
-        <input type="number" id="new-participant-points" value="0" required>
-      </div>
-      <button type="submit">Añadir Usuario</button>
-      <p id="add-error" class="error-message"></p>
+    <section id="add-participant-section" class="card hidden">
+    <div class="card-header">
+        <h2>➕ Añadir Nuevo Participante</h2>
+    </div>
+    <form id="add-participant-form" autocomplete="off" novalidate>
+        <div class="form-group">
+        <label for="new-participant-name">Nombre del participante</label>
+        <input type="text" id="new-participant-name" placeholder="Introduce el nombre" required>
+        </div>
+        <div class="form-group">
+        <label for="new-participant-points">Puntos iniciales</label>
+        <input type="number" id="new-participant-points" value="0" min="0" placeholder="0" required>
+        </div>
+        <button type="submit" class="primary">✨ Crear Usuario</button>
+        <p id="add-error" class="error-message" aria-live="polite"></p>
     </form>
-  </section>
+    </section>
 
-  <!-- Layout principal -->
-  <div class="content-layout">
+    <div class="content-layout">
     <main class="column-main">
-      <section class="card">
-        <h2>Miembros de LA MESA</h2>
+        <section class="card">
+        <div class="card-header">
+            <h2>👥 Miembros de LA MESA</h2>
+            <div class="card-actions">
+            <button id="refresh-list" class="ghost">🔄 Actualizar</button>
+            </div>
+        </div>
         <ul id="lista-personas">
-          <li>Cargando miembros...</li>
+            <li class="loading">Cargando miembros...</li>
         </ul>
-      </section>
+        </section>
 
-      <section id="tienda-section" class="card hidden">
-        <h2>🛒 Tienda</h2>
+        <section id="tienda-section" class="card hidden">
+        <div class="card-header">
+            <h2>🛒 Tienda de Recompensas</h2>
+        </div>
         <div id="tienda-items" class="tienda-grid"></div>
         <div class="mi-puntos">
-          Mis puntos: <strong id="mi-puntos-valor">0</strong>
+            💎 Mis puntos: <strong id="mi-puntos-valor">0</strong>
         </div>
-        <h3>Mis canjes</h3>
-        <ul id="mis-canjes"><li>No hay canjes</li></ul>
-      </section>
+
+        <div id="mis-solicitudes-card" class="card hidden" style="margin-top:18px;">
+            <div class="card-header"><h3>📥 Mis Solicitudes</h3></div>
+            <ul id="mis-solicitudes-list"><li class="loading">Cargando...</li></ul>
+        </div>
+
+        </section>
     </main>
 
     <aside class="column-sidebar">
-      <section class="card">
-        <h2>🏆 Top 5</h2>
+        <section class="card">
+        <div class="card-header">
+            <h2>🏆 Clasificación</h2>
+        </div>
         <ul id="top-5-lista">
-          <li>Cargando top 5...</li>
+            <li class="loading">Cargando clasificación...</li>
         </ul>
-      </section>
+        </section>
+
+        <section id="pending-canje-section" class="card hidden" style="margin-top:16px;">
+          <div class="card-header"><h2>📥 Solicitudes de Canje (Pendientes)</h2></div>
+          <ul id="pending-canje-list"><li class="loading">Cargando solicitudes...</li></ul>
+        </section>
+
     </aside>
-  </div>
+    </div>
 
 </div>
-
-<!-- JS -->
-<script type="module" src="app.js?v=2.5"></script>
-
-
-<!-- Toggle login forms (puede estar en app.js si quieres centralizar) -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  // Toggle login forms según elección
-  const chooseAdminBtn = document.getElementById("choose-admin");
-  const chooseUserBtn = document.getElementById("choose-user");
-  const loginChoiceDiv = document.getElementById("login-choice");
-  const loginFormDiv = document.getElementById("login-form");
-  const loginCodeDiv = document.getElementById("login-code-form");
-
-  // Inicialmente escondemos los formularios de login
-  loginFormDiv.classList.add("hidden");
-  loginCodeDiv.classList.add("hidden");
-
-  chooseAdminBtn.addEventListener("click", () => {
-    loginChoiceDiv.classList.add("hidden");
-    loginFormDiv.classList.remove("hidden");
-  });
-
-  chooseUserBtn.addEventListener("click", () => {
-    loginChoiceDiv.classList.add("hidden");
-    loginCodeDiv.classList.remove("hidden");
-  });
-});
-</script>
-
+<script type="module" src="app.js?v=1.4"></script>
 </body>
 </html>
-
